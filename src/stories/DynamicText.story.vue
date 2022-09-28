@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import DynamicText from "@/components/DynamicText.vue";
+
+const toggleWave = ref(false);
 </script>
 
 <template>
   <Story title="Dynamic Text" :layout="{ type: 'grid', width: '100%' }">
     <Variant title="Bounce sentence">
       <DynamicText
+        class="test"
         text="This is a sentence"
         type="bounce"
         effect="sentence"
@@ -77,6 +81,19 @@ import DynamicText from "@/components/DynamicText.vue";
         to="purple"
         :duration="3"
         :offset="-0.25"
+      />
+    </Variant>
+    <Variant title="Letter Wave">
+      <DynamicText
+        text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        type="bounce"
+        effect="letter"
+        to="-0.5rem"
+        :duration="0.25"
+        :offset="0.05"
+        iteration="2"
+        @click="toggleWave = !toggleWave"
+        v-model:restart="toggleWave"
       />
     </Variant>
   </Story>

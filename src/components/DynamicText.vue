@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 export interface Props {
   text: string;
@@ -9,35 +9,48 @@ export interface Props {
   from?: string;
   to?: string;
   offset?: number;
-  animate?: boolean;
 
   delay?: number;
   duration?: number;
   iteration?: string;
   direction?: string;
   timing?: string;
-}
 
+  restart?: any;
+}
 const props = withDefaults(defineProps<Props>(), {
   type: "none",
   effect: "letter",
   from: "",
   to: "",
   offset: 0.01,
-  animate: true,
 
   delay: 0,
   duration: 1,
   iteration: "infinite",
   direction: "alternate",
   timing: "ease-in-out",
+
+  restart: null,
 });
 
+const animations = ref();
+watch(
+  () => props.restart,
+  () => {
+    animations.value.forEach((element: HTMLElement) => {
+      element.style.animation = "none";
+      element.offsetHeight; /* trigger reflow */
+      element.style.animation = "";
+    });
+  }
+);
+
 const animationClass = computed(() => {
-  if (props.type === "bounce") return "text--bounce";
-  if (props.type === "slide") return "text--slide";
-  if (props.type === "color") return "text--color";
-  if (props.type === "background") return "text--background";
+  if (props.type === "bounce") return "animate--bounce";
+  if (props.type === "slide") return "animate--slide";
+  if (props.type === "color") return "animate--color";
+  if (props.type === "background") return "animate--background";
   return "";
 });
 
@@ -46,51 +59,45 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
 </script>
 
 <template>
-  <div
-    v-if="props.effect == 'sentence'"
-    v-html="sentence"
-    :class="[{ 'text--animate': props.animate }, animationClass]"
-    class="text"
-  ></div>
+  <div class="text">
+    <template v-if="props.effect === 'sentence'">
+      <div
+        v-html="sentence"
+        :class="['animate', animationClass]"
+        :ref="(el) => (animations = [el])"
+        aria-hidden="true"
+      ></div>
+    </template>
 
-  <div v-else class="text">
-    <template v-if="props.effect == 'word'">
-      <template v-for="(word, w) in words" :key="w">
-        <div
-          v-if="word"
-          :style="{ 'animation-delay': `${props.delay + props.offset * w}s` }"
-          :class="[{ 'text--animate': props.animate }, animationClass]"
-        >
-          {{ word }}
-        </div>
-        <div
-          v-if="w != words.length - 1"
-          :style="{ 'animation-delay': `${props.delay + props.offset * w}s` }"
-          :class="[{ 'text--animate': props.animate }, animationClass]"
-        >
-          &nbsp;
-        </div>
-      </template>
+    <template v-else-if="props.effect === 'word'">
+      <div
+        v-for="(word, w) in words"
+        :key="w"
+        :style="{ 'animation-delay': `${props.delay + props.offset * w}s` }"
+        :class="['animate', animationClass]"
+        ref="animations"
+        aria-hidden="true"
+      >
+        {{ word }}
+        <template v-if="w != words.length - 1">&nbsp;</template>
+      </div>
     </template>
 
     <template v-else>
-      <div v-for="(letter, l) in props.text" :key="l">
-        <div
-          v-if="letter != ' '"
-          :style="{ 'animation-delay': `${props.delay + props.offset * l}s` }"
-          :class="[{ 'text--animate': props.animate }, animationClass]"
-        >
-          {{ letter }}
-        </div>
-        <div
-          v-else
-          :style="{ 'animation-delay': `${props.delay + props.offset * l}s` }"
-          :class="[{ 'text--animate': props.animate }, animationClass]"
-        >
-          &nbsp;
-        </div>
+      <div
+        v-for="(letter, l) in props.text"
+        :key="l"
+        :style="{ 'animation-delay': `${props.delay + props.offset * l}s` }"
+        :class="['animate', animationClass]"
+        ref="animations"
+        aria-hidden="true"
+      >
+        <template v-if="/\s/.test(letter)">&nbsp;</template>
+        <template v-else>{{ letter }}</template>
       </div>
     </template>
+
+    <div aria-label="{{props.text}}" />
   </div>
 </template>
 
@@ -101,14 +108,14 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
   & * {
     display: inline-block;
   }
+}
 
-  &--animate {
-    animation-duration: v-bind("`${props.duration}s`");
-    animation-iteration-count: v-bind("props.iteration");
-    animation-direction: v-bind("props.direction");
-    animation-timing-function: v-bind("props.timing");
-    animation-delay: v-bind("`${props.delay}s`");
-  }
+.animate {
+  animation-duration: v-bind("`${props.duration}s`");
+  animation-iteration-count: v-bind("props.iteration");
+  animation-direction: v-bind("props.direction");
+  animation-timing-function: v-bind("props.timing");
+  animation-delay: v-bind("`${props.delay}s`");
 
   &--bounce {
     animation-name: bounce;
