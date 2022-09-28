@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 
 export interface Props {
   text: string;
@@ -34,7 +34,43 @@ const props = withDefaults(defineProps<Props>(), {
   restart: null,
 });
 
+const emit = defineEmits<{
+  (e: "animation-over"): void;
+}>();
+
 const animations = ref();
+const animationsEnded = ref(0);
+onMounted(() => {
+  animations.value.forEach((element: HTMLElement) => {
+    element.addEventListener(
+      "animationend",
+      () => (animationsEnded.value -= 1),
+      false
+    );
+    element.addEventListener(
+      "animationstart",
+      () => (animationsEnded.value += 1),
+      false
+    );
+  });
+});
+onUnmounted(() => {
+  animations.value.forEach((element: HTMLElement) => {
+    element.removeEventListener(
+      "animationend",
+      () => (animationsEnded.value -= 1),
+      false
+    );
+    element.removeEventListener(
+      "animationstart",
+      () => (animationsEnded.value += 1),
+      false
+    );
+  });
+});
+watch(animationsEnded, () => {
+  if (animationsEnded.value == 0) emit("animation-over");
+});
 watch(
   () => props.restart,
   () => {

@@ -3,6 +3,9 @@ import { ref } from "vue";
 import DynamicText from "@/components/DynamicText.vue";
 
 const toggleWave = ref(false);
+const waveEnded = () => {
+  toggleWave.value = !toggleWave.value;
+};
 </script>
 
 <template>
@@ -83,6 +86,19 @@ const toggleWave = ref(false);
         :offset="-0.25"
       />
     </Variant>
+    <Variant title="Word size">
+      <div style="height: 2rem">
+        <DynamicText
+          text="Some words are big, some word are small, ..."
+          type="size"
+          effect="word"
+          to="1.5rem"
+          :duration="4"
+          :offset="0.4"
+          iteration="infinite"
+        />
+      </div>
+    </Variant>
     <Variant title="Letter Wave">
       <DynamicText
         text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -94,22 +110,8 @@ const toggleWave = ref(false);
         iteration="2"
         @click="toggleWave = !toggleWave"
         v-model:restart="toggleWave"
+        @animation-over="waveEnded"
       />
-    </Variant>
-    <Variant title="Word size">
-      <div style="height: 2rem">
-        <DynamicText
-          text="Some words are big, some word are small, ..."
-          type="size"
-          effect="word"
-          to="1.5rem"
-          :duration="4"
-          :offset="0.5"
-          iteration="infinite"
-          @click="toggleWave = !toggleWave"
-          v-model:restart="toggleWave"
-        />
-      </div>
     </Variant>
   </Story>
 </template>
