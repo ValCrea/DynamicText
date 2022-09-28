@@ -4,7 +4,7 @@ import { computed } from "vue";
 export interface Props {
   text: string;
 
-  type?: "bounce" | "slide" | "none";
+  type?: "bounce" | "slide" | "color" | "background" | "none";
   effect?: "sentence" | "word" | "letter";
   from?: string;
   to?: string;
@@ -36,6 +36,8 @@ const props = withDefaults(defineProps<Props>(), {
 const animationClass = computed(() => {
   if (props.type === "bounce") return "text--bounce";
   if (props.type === "slide") return "text--slide";
+  if (props.type === "color") return "text--color";
+  if (props.type === "background") return "text--background";
   return "";
 });
 
@@ -61,7 +63,13 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
         >
           {{ word }}
         </div>
-        <div v-if="w != words.length - 1">&nbsp;</div>
+        <div
+          v-if="w != words.length - 1"
+          :style="{ 'animation-delay': `${props.delay + props.offset * w}s` }"
+          :class="[{ 'text--animate': props.animate }, animationClass]"
+        >
+          &nbsp;
+        </div>
       </template>
     </template>
 
@@ -74,7 +82,13 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
         >
           {{ letter }}
         </div>
-        <div v-else>&nbsp;</div>
+        <div
+          v-else
+          :style="{ 'animation-delay': `${props.delay + props.offset * l}s` }"
+          :class="[{ 'text--animate': props.animate }, animationClass]"
+        >
+          &nbsp;
+        </div>
       </div>
     </template>
   </div>
@@ -102,6 +116,12 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
   &--slide {
     animation-name: slide;
   }
+  &--color {
+    animation-name: color;
+  }
+  &--background {
+    animation-name: background;
+  }
 }
 
 @keyframes bounce {
@@ -119,6 +139,24 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
   }
   to {
     transform: translateX(v-bind("props.to"));
+  }
+}
+
+@keyframes color {
+  from {
+    color: v-bind("props.from");
+  }
+  to {
+    color: v-bind("props.to");
+  }
+}
+
+@keyframes background {
+  from {
+    background-color: v-bind("props.from");
+  }
+  to {
+    background-color: v-bind("props.to");
   }
 }
 </style>

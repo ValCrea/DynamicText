@@ -36,24 +36,47 @@ import DynamicText from "@/components/DynamicText.vue";
     </Variant>
     <Variant title="Slide letters">
       <DynamicText
-        text="H e l l o   W o r l d"
+        text="Spin me please"
         type="slide"
         effect="letter"
         from="1rem"
         to="10rem"
-        :duration="2"
-        :offset="0.1"
+        :duration="1.5"
+        :offset="0.15"
       />
     </Variant>
     <Variant title="Slide letters reverse">
       <DynamicText
-        text="H e l l o   W o r l d"
+        text="Spin me  also "
         type="slide"
         effect="letter"
         from="1rem"
         to="10rem"
+        :duration="1.5"
+        :offset="-0.15"
+      />
+    </Variant>
+    <Variant title="Color letter text">
+      <DynamicText
+        text="Red, blue and everything in between"
+        type="color"
+        effect="letter"
+        from="red"
+        to="blue"
         :duration="2"
-        :offset="-0.1"
+        :offset="0.1"
+        :delay="-20"
+      />
+    </Variant>
+    <Variant title="Color word background">
+      <DynamicText
+        text="The background is nice but the code is nicer"
+        type="background"
+        effect="word"
+        from="green"
+        to="purple"
+        :duration="3"
+        :offset="-0.25"
       />
     </Variant>
   </Story>
