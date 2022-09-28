@@ -70,12 +70,14 @@ onUnmounted(() => {
     );
   });
 });
-watch(animationsEnded, () => {
-  if (animationsEnded.value == 0) emit("animation-over");
+watch(animationsEnded, (newValue, oldValue) => {
+  if (animationsEnded.value == 0 && oldValue - newValue === 1)
+    emit("animation-over");
 });
 watch(
   () => props.restart,
   () => {
+    animationsEnded.value = 0;
     animations.value.forEach((element: HTMLElement) => {
       element.style.animation = "none";
       element.offsetHeight; /* trigger reflow */

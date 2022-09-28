@@ -79,7 +79,7 @@ const toggleAnimation = ref(true);
     </Variant>
     <Variant title="Color word background">
       <DynamicText
-        text="The background is nice but the code is nicer"
+        text="The background is nice, but the code is nicer"
         type="background"
         effect="word"
         from="green"
@@ -91,7 +91,7 @@ const toggleAnimation = ref(true);
     <Variant title="Word size">
       <div style="height: 2rem">
         <DynamicText
-          text="Some words are big, some word are small, ..."
+          text="Some words are big, some words are small, ..."
           type="size"
           effect="word"
           to="1.5rem"
