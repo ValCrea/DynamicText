@@ -97,7 +97,7 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
       </div>
     </template>
 
-    <div aria-label="{{props.text}}" />
+    <div :aria-label="props.text" />
   </div>
 </template>
 

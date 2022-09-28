@@ -24,7 +24,7 @@ const toggleWave = ref(false);
         type="bounce"
         effect="word"
         to="-0.25rem"
-        :duration="0.6"
+        :duration="0.8"
         :offset="0.2"
       />
     </Variant>
@@ -89,8 +89,8 @@ const toggleWave = ref(false);
         type="bounce"
         effect="letter"
         to="-0.5rem"
-        :duration="0.25"
-        :offset="0.05"
+        :duration="0.2"
+        :offset="0.04"
         iteration="2"
         @click="toggleWave = !toggleWave"
         v-model:restart="toggleWave"
