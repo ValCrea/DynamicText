@@ -1,9 +1,22 @@
 <script setup lang="ts">
-import DynamicText from "@/components/DynamicText.vue";
+import { ref } from "vue";
+import DTextBounce from "@/components/DTextBounce.vue";
+
+const animate = ref(true);
 </script>
 
 <template>
   <Story>
-    <DynamicText />
+    <br />
+    <button @click="animate = !animate">Animate</button>
+    <br />
+    <DTextBounce text="He ll  o " :delay="1" :animate="animate" />
+    <DTextBounce text="He ll  o " effect="word" :delay="2" :animate="animate" />
+    <DTextBounce
+      text="He ll  o "
+      effect="sentence"
+      :delay="3"
+      :animate="animate"
+    />
   </Story>
 </template>
