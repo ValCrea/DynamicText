@@ -6,6 +6,8 @@ const toggleWave = ref(false);
 const waveEnded = () => {
   toggleWave.value = !toggleWave.value;
 };
+
+const toggleAnimation = ref(true);
 </script>
 
 <template>
@@ -111,6 +113,19 @@ const waveEnded = () => {
         @click="toggleWave = !toggleWave"
         v-model:restart="toggleWave"
         @animation-over="waveEnded"
+      />
+    </Variant>
+    <Variant title="Click to stop">
+      <DynamicText
+        text="Click me to TOGGLE me :)"
+        type="slide"
+        effect="word"
+        to="5rem"
+        :duration="2"
+        :offset="0.075"
+        iteration="infinite"
+        :animate="toggleAnimation"
+        @click="toggleAnimation = !toggleAnimation"
       />
     </Variant>
   </Story>
