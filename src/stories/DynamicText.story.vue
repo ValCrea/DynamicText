@@ -96,5 +96,20 @@ const toggleWave = ref(false);
         v-model:restart="toggleWave"
       />
     </Variant>
+    <Variant title="Word size">
+      <div style="height: 2rem">
+        <DynamicText
+          text="Some words are big, some word are small, ..."
+          type="size"
+          effect="word"
+          to="1.5rem"
+          :duration="4"
+          :offset="0.5"
+          iteration="infinite"
+          @click="toggleWave = !toggleWave"
+          v-model:restart="toggleWave"
+        />
+      </div>
+    </Variant>
   </Story>
 </template>

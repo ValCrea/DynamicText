@@ -4,7 +4,7 @@ import { ref, computed, watch } from "vue";
 export interface Props {
   text: string;
 
-  type?: "bounce" | "slide" | "color" | "background" | "none";
+  type?: "bounce" | "slide" | "color" | "background" | "size" | "none";
   effect?: "sentence" | "word" | "letter";
   from?: string;
   to?: string;
@@ -46,13 +46,7 @@ watch(
   }
 );
 
-const animationClass = computed(() => {
-  if (props.type === "bounce") return "animate--bounce";
-  if (props.type === "slide") return "animate--slide";
-  if (props.type === "color") return "animate--color";
-  if (props.type === "background") return "animate--background";
-  return "";
-});
+const animationClass = computed(() => `animate--${props.type}`);
 
 const words = computed(() => props.text.split(" "));
 const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
@@ -129,6 +123,9 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
   &--background {
     animation-name: background;
   }
+  &--size {
+    animation-name: size;
+  }
 }
 
 @keyframes bounce {
@@ -164,6 +161,15 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
   }
   to {
     background-color: v-bind("props.to");
+  }
+}
+
+@keyframes size {
+  from {
+    font-size: v-bind("props.from");
+  }
+  to {
+    font-size: v-bind("props.to");
   }
 }
 </style>
