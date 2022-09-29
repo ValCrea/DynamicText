@@ -101,20 +101,6 @@ const toggleAnimation = ref(true);
         />
       </div>
     </Variant>
-    <Variant title="Letter Wave">
-      <DynamicText
-        text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        type="bounce"
-        effect="letter"
-        to="-0.5rem"
-        :duration="0.2"
-        :offset="0.04"
-        iteration="2"
-        @click="toggleWave = !toggleWave"
-        v-model:restart="toggleWave"
-        @animation-over="waveEnded"
-      />
-    </Variant>
     <Variant title="Click to stop">
       <DynamicText
         text="Click me to TOGGLE me :)"
@@ -124,8 +110,22 @@ const toggleAnimation = ref(true);
         :duration="2"
         :offset="0.075"
         iteration="infinite"
-        :animate="toggleAnimation"
+        :run="toggleAnimation"
         @click="toggleAnimation = !toggleAnimation"
+      />
+    </Variant>
+    <Variant title="Letter Wave">
+      <DynamicText
+        text="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        type="bounce"
+        effect="letter"
+        to="-0.5rem"
+        :duration="0.2"
+        :offset="0.04"
+        iteration="2"
+        @click.left="toggleWave = !toggleWave"
+        v-model:restart="toggleWave"
+        @animation-over="waveEnded"
       />
     </Variant>
   </Story>

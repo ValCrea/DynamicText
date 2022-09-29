@@ -16,7 +16,7 @@ export interface Props {
   direction?: string;
   timing?: string;
 
-  animate?: boolean;
+  run?: boolean;
   restart?: any;
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   direction: "alternate",
   timing: "ease-in-out",
 
-  animate: true,
+  run: true,
   restart: null,
 });
 
@@ -97,7 +97,7 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
     <template v-if="props.effect === 'sentence'">
       <div
         v-html="sentence"
-        :class="[{ animate: props.animate }, animationClass]"
+        :class="[{ animate: props.run }, animationClass]"
         :ref="(el) => (animations = [el])"
         aria-hidden="true"
       ></div>
@@ -108,7 +108,7 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
         v-for="(word, w) in words"
         :key="w"
         :style="{ 'animation-delay': `${props.delay + props.offset * w}s` }"
-        :class="[{ animate: props.animate }, animationClass]"
+        :class="[{ animate: props.run }, animationClass]"
         ref="animations"
         aria-hidden="true"
       >
@@ -122,7 +122,7 @@ const sentence = computed(() => props.text.replace(/\s/g, "&nbsp;"));
         v-for="(letter, l) in props.text"
         :key="l"
         :style="{ 'animation-delay': `${props.delay + props.offset * l}s` }"
-        :class="[{ animate: props.animate }, animationClass]"
+        :class="[{ animate: props.run }, animationClass]"
         ref="animations"
         aria-hidden="true"
       >
